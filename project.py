@@ -14,7 +14,8 @@ def main():
     # Event loop
     while True:
         event, values = window.read()
-        if event == sg.WIN_CLOSED or event == "Exit":
+        if event == sg.WIN_CLOSED or event == "Exit" or event == "":
+            print("Exiting...")
             break
 
         if event == "Search" or event == "Input1" + "_Enter":
