@@ -3,5 +3,5 @@
 # GUI
 PySimpleGui
 
-# Weather API
+# API
 requests
