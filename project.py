@@ -18,7 +18,11 @@ def main():
     # Event loop
     while True:
         event, values = window.read()
-        user_input = values["Input1"].strip()
+        # If app is closed without the user entering a value
+        try:
+            user_input = values["Input1"].strip()
+        except TypeError:
+            break
         if event == sg.WIN_CLOSED or event == "Exit":
             print("Exiting Applicaiton...")
             break
