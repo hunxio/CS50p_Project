@@ -7,7 +7,7 @@ def main():
     # Elements inside the window
     layout = [
         [sg.Text("CS50P Weather Project", size=(16, 1), font=FONT+str(20))],
-        [sg.Text("User input field :", size=(12, 1), font=FONT+str(18)), sg.Input("", key="Input1", size=(47,3))],
+        [sg.Text("User input field :", size=(12, 1), font=FONT+str(18)), sg.Input("", key="Input1", size=(25,3), font=FONT+str(18))],
         [sg.Button("Search", size=(20, 1), font=FONT+str(16)), sg.Button("Exit", size=(20, 1), font=FONT+str(16))]
     ]
 
