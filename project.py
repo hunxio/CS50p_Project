@@ -42,6 +42,9 @@ def main():
 def no_input_popup():
     sg.popup("Error", "Please enter a valid input in the search bar.", font=FONT+str(18))
 
+#TODO: Configure the API to return informations about a city. Temperature, humidity and precipitation (Might change them later on)
+def api():
+    ...
 
 if __name__ == "__main__":
     main()
