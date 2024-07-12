@@ -86,7 +86,7 @@ def api():
     )
 
 #TODO: Time to show hh:mm format
-def time_format(time):
+def time_format(time: int) -> str:
     ...
 
 
