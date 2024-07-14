@@ -63,12 +63,14 @@ def input_validation() -> str:
     if user_input:
         try:
             latitude, longitude, time = (
-                get_coordinates(user_input)[0],
-                get_coordinates(user_input)[1],
+                get_coordinates(user_input)["latitude"],
+                get_coordinates(user_input)["longitude"],
                 get_time(),
             )
             details = temperature_api(latitude, longitude)
-            print(details, time)
+            # For the moment the results will be shown in the Terminal
+            if latitude and longitude and time:
+                print(f"Temperature: {details["temperature"]}°C\nHumidity: {details["humidity"]}%\nPrecipitation: {details["precipitation"]}%")
         except AttributeError:
             print("Invalid input")
 
@@ -99,11 +101,11 @@ def temperature_api(user_latitude: float, user_longitude: float) -> dict:
     current_precipitation = current.Variables(2).Value()
 
     # Temperature value could be 1-2 degrees different because of the rounding error
-    return (
-        round(current_temperature_2m),
-        float("%.1f" % current_relative_humidity_2m),
-        int(current_precipitation),
-    )
+    return {
+        "temperature": round(current_temperature_2m),
+        "humidity": float("%.1f" % current_relative_humidity_2m),
+        "precipitation": int(current_precipitation),
+    }
 
 
 if __name__ == "__main__":
