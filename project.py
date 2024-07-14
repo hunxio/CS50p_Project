@@ -21,20 +21,23 @@ def main():
     window.geometry("500x300")
     window.title("CS50P Weather Project")
     window.grid_columnconfigure(0, weight=1)
+
     location_text = tk.Label(window,
                          text="Please select a location",
                          font=(FONT, 15))
     location_text.grid(row=0, column=0, sticky="WE", padx=20, pady=10)
-    user_loc_input = tk.Entry()
+
+    user_loc_input = tk.Entry(window)
     user_loc_input.grid(row=1, column=0, sticky="WE", padx=10)
+
     confirm_button = tk.Button(text="Find the temperature", command=input_validation)
     confirm_button.grid(row=2, column=0, sticky="N", pady=10)
+
     window.mainloop()
 
-#TODO: Fix user input validation error
 def input_validation() -> str:
     user_input = user_loc_input.get()
-    if user_input():
+    if user_input:
         output_response= user_input
     else:
         output_response = "The search bar is empty, please enter your search"
