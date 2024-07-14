@@ -6,7 +6,7 @@ from geopy.geocoders import Nominatim
 def get_time() -> str:
     c = datetime.now()
     current_time = c.strftime("%H:%M")
-    return str(current_time)
+    return current_time
 
 
 # Retrieves the user's current latitude and longitude
