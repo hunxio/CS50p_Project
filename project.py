@@ -38,13 +38,16 @@ def main():
 def input_validation() -> str:
     user_input = user_loc_input.get()
     if user_input:
-        output_response= user_input
+        try:
+            get_coordinates(user_input)
+        except AttributeError:
+            print("Invalid input")
+    
+        
     else:
-        output_response = "The search bar is empty, please enter your search"
+        print("The search bar is empty, please enter your search")
 
-    print(f"Test output: {output_response}")
-
-def temperature_api():
+def temperature_api(lat, long) -> dict:
     # Cache the requests to improve performance and reduce the number of API calls.
     cache_session = requests_cache.CachedSession(".cache", expire_after=3600)
     retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
@@ -75,13 +78,11 @@ def get_time():
     current_time = c.strftime("%H:%M")
     return current_time
 
-# TODO: Fix geopy
-def get_coordinates(city: str):
-    loc = Nominatim(user_agent="GetLoc")
- 
-# entering the location name
-    getLoc = loc.geocode(f"{city}")
 
+def get_coordinates(city: str) -> dict:
+    geolocator = Nominatim(user_agent="CS50PWeather")
+    getLoc = geolocator.geocode(city)
+    
     return getLoc.latitude, getLoc.longitude
 
 
