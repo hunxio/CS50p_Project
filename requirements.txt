@@ -2,6 +2,8 @@
 
 # GUI
 tk
+sv-ttk
+pillow
 
 # API
 requests
