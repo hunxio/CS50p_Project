@@ -58,7 +58,7 @@ def app_gui():
     confirm_button.grid(row=3, column=0, sticky="N", pady=10)
 
     window.mainloop()
-    
+
 def input_validation() -> str:
     user_input = user_loc_input.get()
     if user_input:
@@ -70,8 +70,7 @@ def input_validation() -> str:
             )
             details = temperature_api(latitude, longitude)
             # For the moment the results will be shown in the Terminal
-            if latitude and longitude and time:
-                print(f"Temperature: {details["temperature"]}°C\nHumidity: {details["humidity"]}%\nPrecipitation: {details["precipitation"]}%")
+            print(f"Temperature: {details["temperature"]}°C\nHumidity: {details["humidity"]}%\nPrecipitation: {details["precipitation"]}%")
         except AttributeError:
             print("Invalid input")
 
