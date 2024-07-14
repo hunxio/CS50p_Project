@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter as tk
+from PIL import ImageTk, Image  
 import openmeteo_requests
 import requests
 import requests_cache
@@ -11,27 +12,45 @@ from geopy.geocoders import Nominatim
 
 # Used as follows: FONT+str(<number>), <number> increases or decreases the font fize
 FONT = "Montserrat"
-
+BACKGROUND_COLOR = "#426b9e"
+FONT_COLOR = "#ffffff"
+DETAILS_COLOR = "#7aa4c3"
 
 def main():
     global user_loc_input
     # Window initialization
     window = tk.Tk()
-    
-    window.geometry("500x300")
-    window.title("CS50P Weather Project")
+    window.configure(bg=BACKGROUND_COLOR)
+    window.geometry("325x325")
+    window.title("CS50P Hunxio's Project")
     window.grid_columnconfigure(0, weight=1)
 
+    # Icon
+    icon = PhotoImage(file="logo.png")
+    window.iconphoto(False, icon)
+
+    # Text 
     location_text = tk.Label(window,
-                         text="Please select a location",
+                         text="CS50P Weather Project",
                          font=(FONT, 15))
-    location_text.grid(row=0, column=0, sticky="WE", padx=20, pady=10)
+    location_text.config(bg=BACKGROUND_COLOR, fg=FONT_COLOR)
+    location_text.grid(row=1, column=0, sticky="WE", padx=20, pady=10)
 
+    # Logo App 
+    logo_app = PhotoImage(file="logo.png")
+    logo_app.image = logo_app
+    logo_app_label = tk.Label(window, image=logo_app)
+    logo_app_label.config(bg=BACKGROUND_COLOR)
+    logo_app_label.grid(row=0, column=0, padx=20)
+
+    # Input Field
     user_loc_input = tk.Entry(window)
-    user_loc_input.grid(row=1, column=0, sticky="WE", padx=10)
+    user_loc_input.grid(row=2, column=0, sticky="WE", padx=10)
 
+    # Button Search
     confirm_button = tk.Button(text="Find the temperature", command=input_validation)
-    confirm_button.grid(row=2, column=0, sticky="N", pady=10)
+    confirm_button.config(bg=DETAILS_COLOR, fg=FONT_COLOR, font=(FONT, 13))
+    confirm_button.grid(row=3, column=0, sticky="N", pady=10)
 
     window.mainloop()
 
