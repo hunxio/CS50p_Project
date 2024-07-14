@@ -14,5 +14,8 @@ def get_coordinates(city: str) -> dict:
     geolocator = Nominatim(user_agent="CS50PWeather")
     getLoc = geolocator.geocode(city)
 
-    return getLoc.latitude, getLoc.longitude
+    return {
+        "latitude": getLoc.latitude, 
+        "longitude": getLoc.longitude
+        }
 
