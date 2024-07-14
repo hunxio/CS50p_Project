@@ -58,6 +58,7 @@ def app_gui():
     confirm_button.grid(row=3, column=0, sticky="N", pady=10)
 
     window.mainloop()
+    
 def input_validation() -> str:
     user_input = user_loc_input.get()
     if user_input:
