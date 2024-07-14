@@ -70,6 +70,7 @@ def temperature_api(user_latitude: float, user_longitude: float) -> dict:
     current_relative_humidity_2m = current.Variables(1).Value()
     current_precipitation = current.Variables(2).Value()
 
+    # Temperature value could be 1-2 degrees different because of the rounding error
     return round(current_temperature_2m), float("%.1f" % current_relative_humidity_2m), int(current_precipitation)
 
 
