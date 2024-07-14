@@ -1,6 +1,6 @@
 from tkinter import *
 import tkinter as tk
-from PIL import ImageTk, Image  
+from PIL import ImageTk, Image
 import openmeteo_requests
 import requests
 import requests_cache
@@ -16,6 +16,7 @@ BACKGROUND_COLOR = "#426b9e"
 FONT_COLOR = "#ffffff"
 DETAILS_COLOR = "#7aa4c3"
 
+
 def main():
     global user_loc_input
     # Window initialization
@@ -29,14 +30,12 @@ def main():
     icon = PhotoImage(file="logo.png")
     window.iconphoto(False, icon)
 
-    # Text 
-    location_text = tk.Label(window,
-                         text="CS50P Weather Project",
-                         font=(FONT, 15))
+    # Text
+    location_text = tk.Label(window, text="CS50P Weather Project", font=(FONT, 15))
     location_text.config(bg=BACKGROUND_COLOR, fg=FONT_COLOR)
     location_text.grid(row=1, column=0, sticky="WE", padx=20, pady=10)
 
-    # Logo App 
+    # Logo App
     logo_app = PhotoImage(file="logo.png")
     logo_app.image = logo_app
     logo_app_label = tk.Label(window, image=logo_app)
@@ -54,18 +53,24 @@ def main():
 
     window.mainloop()
 
+
 def input_validation() -> str:
     user_input = user_loc_input.get()
     if user_input:
         try:
-            latitude, longitude, time = get_coordinates(user_input)[0], get_coordinates(user_input)[1], get_time()
+            latitude, longitude, time = (
+                get_coordinates(user_input)[0],
+                get_coordinates(user_input)[1],
+                get_time(),
+            )
             details = temperature_api(latitude, longitude)
             print(details, time)
         except AttributeError:
             print("Invalid input")
-      
+
     else:
         print("The search bar is empty, please enter your search")
+
 
 def temperature_api(user_latitude: float, user_longitude: float) -> dict:
     # Cache the requests to improve performance and reduce the number of API calls.
@@ -76,8 +81,8 @@ def temperature_api(user_latitude: float, user_longitude: float) -> dict:
     # Openmeteo API request
     url = "https://api.open-meteo.com/v1/forecast"
     params = {
-        "latitude": user_latitude, # needs to change based on location
-        "longitude": user_longitude, # needs to change based on location
+        "latitude": user_latitude,  # needs to change based on location
+        "longitude": user_longitude,  # needs to change based on location
         "current": ["temperature_2m", "relative_humidity_2m", "precipitation"],
     }
     responses = openmeteo.weather_api(url, params=params)
@@ -90,7 +95,11 @@ def temperature_api(user_latitude: float, user_longitude: float) -> dict:
     current_precipitation = current.Variables(2).Value()
 
     # Temperature value could be 1-2 degrees different because of the rounding error
-    return round(current_temperature_2m), float("%.1f" % current_relative_humidity_2m), int(current_precipitation)
+    return (
+        round(current_temperature_2m),
+        float("%.1f" % current_relative_humidity_2m),
+        int(current_precipitation),
+    )
 
 
 # Get time from user's location, it does not show the location time
@@ -105,7 +114,7 @@ def get_time() -> str:
 def get_coordinates(city: str) -> dict:
     geolocator = Nominatim(user_agent="CS50PWeather")
     getLoc = geolocator.geocode(city)
-    
+
     return getLoc.latitude, getLoc.longitude
 
 
