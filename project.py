@@ -15,7 +15,9 @@ FONT = "Montserrat"
 
 def main():
     global user_loc_input
+    # Window initialization
     window = tk.Tk()
+    
     window.geometry("500x300")
     window.title("CS50P Weather Project")
     window.grid_columnconfigure(0, weight=1)
@@ -30,14 +32,14 @@ def main():
     window.mainloop()
 
 #TODO: Fix user input validation error
-def input_validation():
+def input_validation() -> str:
     user_input = user_loc_input.get()
     if user_input():
         output_response= user_input
     else:
         output_response = "The search bar is empty, please enter your search"
 
-    print(f"Test output: {user_i}")
+    print(f"Test output: {output_response}")
 
 def temperature_api():
     # Cache the requests to improve performance and reduce the number of API calls.
