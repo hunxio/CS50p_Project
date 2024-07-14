@@ -1,70 +1,42 @@
-import PySimpleGUI as sg
+from tkinter import *
+import tkinter as tk
 import openmeteo_requests
+import requests
 import requests_cache
 import pandas as pd
 from retry_requests import retry
 from datetime import datetime
 from geopy.geocoders import Nominatim
 
+
 # Used as follows: FONT+str(<number>), <number> increases or decreases the font fize
 FONT = "Montserrat "
 
 
 def main():
-    # Elements inside the window
-    layout = [
-        [sg.Text("CS50P Weather Project", size=(16, 1), font=FONT + str(20))],
-        [
-            sg.Text("User input field :", size=(12, 1), font=FONT + str(18)),
-            sg.Input(
-                "", key="Input1", size=(25, 3), enable_events=True, font=FONT + str(18)
-            ),
-        ],
-        [
-            sg.Button("Search", size=(20, 1), font=FONT + str(16)),
-            sg.Button("Exit", size=(20, 1), font=FONT + str(16)),
-        ],
-    ]
-
-    # Window initialization
-    window = sg.Window(
-        "CS50P Project", layout, element_justification="c", finalize=True
-    )
-
-    # Bind Enter key to search button
-    window["Input1"].bind("<Return>", "_Enter")
-
-    # Event loop
-    while True:
-        event, values = window.read()
-        # If app is closed without the user entering a value
-
-        if event == sg.WIN_CLOSED or event == "Exit":
-            print("Exiting application.")
-            break
-
-        if event == "Search" or event == "Input1" + "_Enter":
-            try:
-                user_input = values["Input1"].strip()
-                if not user_input:
-                    raise ValueError
-                temperature, humidity, precipitation, time = api()[0], api()[1], api()[2], get_time()
-                get_coordinates(user_input)
-                print(get_coordinates(capitalize(user_input))[0], get_coordinates(capitalize(user_input))[1])
-                window.close()
-            except ValueError:
-                # Pop up window when user does not enter a value
-                no_input_popup()
+    window = tk.Tk()
+    window.geometry("500x300")
+    window.title("CS50P Weather Project")
+    window.grid_columnconfigure(0, weight=1)
+    location_text = tk.Label(window,
+                         text="Please select a location",
+                         font=(FONT.strip, 15))
+    location_text.grid(row=0, column=0, sticky="WE", padx=20, pady=10)
+    user_loc_input = tk.Entry()
+    user_loc_input.grid(row=1, column=0, sticky="WE", padx=10)
+    confirm_button = tk.Button(text="Find the temperature", command=input_validation)
+    confirm_button.grid(row=2, column=0, sticky="N", pady=10)
+    window.mainloop()
 
 
-def no_input_popup():
-    sg.popup(
-        "Error", "Please enter a valid input in the search bar.", font=FONT + str(18)
-    )
+def input_validation():
+    if user_input():
+        output_response= user_input.get()
+    else:
+        output_response = "The search bar is empty, please enter your search"
 
 
-# TODO: Configure the API to return informations about a city. Temperature, humidity and precipitation (Might change them later on)
-def api():
+def temperature_api():
     # Cache the requests to improve performance and reduce the number of API calls.
     cache_session = requests_cache.CachedSession(".cache", expire_after=3600)
     retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
