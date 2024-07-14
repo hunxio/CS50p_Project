@@ -1,28 +1,34 @@
+# Tkinter GUI  #
 from tkinter import *
 import tkinter as tk
 from PIL import ImageTk, Image
+# Integrations for API  #
+from utils import get_time, get_coordinates
+# API #
 import openmeteo_requests
 import requests
 import requests_cache
 import pandas as pd
 from retry_requests import retry
-from datetime import datetime
-from geopy.geocoders import Nominatim
-
-
-# Used as follows: FONT+str(<number>), <number> increases or decreases the font fize
-FONT = "Montserrat"
-BACKGROUND_COLOR = "#426b9e"
-FONT_COLOR = "#ffffff"
-DETAILS_COLOR = "#7aa4c3"
 
 
 def main():
+    app_gui()
+
+
+def app_gui():
+    # Font
+    font = "Montserrat"
+    # Colors
+    background_color = "#426b9e"
+    font_color = "#ffffff"
+    details_color = "#7aa4c3"
+
     global user_loc_input
     # Window initialization
     window = tk.Tk()
-    window.configure(bg=BACKGROUND_COLOR)
-    window.geometry("325x325")
+    window.configure(bg=background_color)
+    window.geometry("350x350")
     window.title("CS50P Hunxio's Project")
     window.grid_columnconfigure(0, weight=1)
 
@@ -31,15 +37,15 @@ def main():
     window.iconphoto(False, icon)
 
     # Text
-    location_text = tk.Label(window, text="CS50P Weather Project", font=(FONT, 15))
-    location_text.config(bg=BACKGROUND_COLOR, fg=FONT_COLOR)
+    location_text = tk.Label(window, text="CS50P Weather Project", font=(font, 17))
+    location_text.config(bg=background_color, fg=font_color)
     location_text.grid(row=1, column=0, sticky="WE", padx=20, pady=10)
 
     # Logo App
     logo_app = PhotoImage(file="logo.png")
     logo_app.image = logo_app
     logo_app_label = tk.Label(window, image=logo_app)
-    logo_app_label.config(bg=BACKGROUND_COLOR)
+    logo_app_label.config(bg=background_color)
     logo_app_label.grid(row=0, column=0, padx=20)
 
     # Input Field
@@ -48,12 +54,10 @@ def main():
 
     # Button Search
     confirm_button = tk.Button(text="Find the temperature", command=input_validation)
-    confirm_button.config(bg=DETAILS_COLOR, fg=FONT_COLOR, font=(FONT, 13))
+    confirm_button.config(bg=details_color, fg=font_color, font=(font, 13))
     confirm_button.grid(row=3, column=0, sticky="N", pady=10)
 
     window.mainloop()
-
-
 def input_validation() -> str:
     user_input = user_loc_input.get()
     if user_input:
@@ -81,8 +85,8 @@ def temperature_api(user_latitude: float, user_longitude: float) -> dict:
     # Openmeteo API request
     url = "https://api.open-meteo.com/v1/forecast"
     params = {
-        "latitude": user_latitude,  # needs to change based on location
-        "longitude": user_longitude,  # needs to change based on location
+        "latitude": user_latitude,  # Receives the latitude from get_coordinates
+        "longitude": user_longitude,  # Receives the longitude from get_coordinates
         "current": ["temperature_2m", "relative_humidity_2m", "precipitation"],
     }
     responses = openmeteo.weather_api(url, params=params)
@@ -100,22 +104,6 @@ def temperature_api(user_latitude: float, user_longitude: float) -> dict:
         float("%.1f" % current_relative_humidity_2m),
         int(current_precipitation),
     )
-
-
-# Get time from user's location, it does not show the location time
-# It won't be used for the API, only "decoration"
-def get_time() -> str:
-    c = datetime.now()
-    current_time = c.strftime("%H:%M")
-    return str(current_time)
-
-
-# Retrieves the user's current latitude and longitude
-def get_coordinates(city: str) -> dict:
-    geolocator = Nominatim(user_agent="CS50PWeather")
-    getLoc = geolocator.geocode(city)
-
-    return getLoc.latitude, getLoc.longitude
 
 
 if __name__ == "__main__":
