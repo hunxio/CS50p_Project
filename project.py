@@ -39,15 +39,16 @@ def input_validation() -> str:
     user_input = user_loc_input.get()
     if user_input:
         try:
-            get_coordinates(user_input)
+            latitude, longitude, time = get_coordinates(user_input)[0], get_coordinates(user_input)[1], get_time()
+            details = temperature_api(latitude, longitude)
+            print(details, time)
         except AttributeError:
             print("Invalid input")
-    
-        
+      
     else:
         print("The search bar is empty, please enter your search")
 
-def temperature_api(lat, long) -> dict:
+def temperature_api(user_latitude: float, user_longitude: float) -> dict:
     # Cache the requests to improve performance and reduce the number of API calls.
     cache_session = requests_cache.CachedSession(".cache", expire_after=3600)
     retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
@@ -56,8 +57,8 @@ def temperature_api(lat, long) -> dict:
     # Openmeteo API request
     url = "https://api.open-meteo.com/v1/forecast"
     params = {
-        "latitude": 55.7522, # needs to change based on location
-        "longitude": 37.6156, # needs to change based on location
+        "latitude": user_latitude, # needs to change based on location
+        "longitude": user_longitude, # needs to change based on location
         "current": ["temperature_2m", "relative_humidity_2m", "precipitation"],
     }
     responses = openmeteo.weather_api(url, params=params)
@@ -69,16 +70,18 @@ def temperature_api(lat, long) -> dict:
     current_relative_humidity_2m = current.Variables(1).Value()
     current_precipitation = current.Variables(2).Value()
 
-    return current_temperature_2m, current_relative_humidity_2m, current_precipitation
+    return round(current_temperature_2m), float("%.1f" % current_relative_humidity_2m), int(current_precipitation)
 
 
-# Get time from user's location
-def get_time():
+# Get time from user's location, it does not show the location time
+# It won't be used for the API, only "decoration"
+def get_time() -> str:
     c = datetime.now()
     current_time = c.strftime("%H:%M")
-    return current_time
+    return str(current_time)
 
 
+# Retrieves the user's current latitude and longitude
 def get_coordinates(city: str) -> dict:
     geolocator = Nominatim(user_agent="CS50PWeather")
     getLoc = geolocator.geocode(city)
