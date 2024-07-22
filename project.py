@@ -25,6 +25,9 @@ def app_gui(window):
 
     global user_loc_input, temperature_label, humidity_label, precipitation_label, error_label
 
+    # Window size can not be resized
+    window.resizable(width=False, height=False)
+
     # Font
     font = "Montserrat"
 
@@ -35,7 +38,7 @@ def app_gui(window):
 
     # Window initialization
     window.configure(bg=background_color)
-    window.geometry("500x500")
+    window.geometry("415x415")
     window.title("CS50P Hunxio's Project")
     window.grid_columnconfigure(0, weight=1)
 
@@ -137,11 +140,11 @@ def temperature_api(user_latitude: float, user_longitude: float) -> dict:
 def window_update(
     temperature_update: int, humidity_update: float, precipitation_update: float
 ) -> None:
-    temperature_label.config(text=f"Temperature: {temperature_update} °C")
-    temperature_label.grid(row=4, column=0, sticky="WE", padx=40, pady=10)
-    humidity_label.config(text=f"Humidity: {humidity_update} %")
+    temperature_label.config(text=f"Temperature:  {temperature_update} °C")
+    temperature_label.grid(row=4, column=0, sticky="WE", padx=20, pady=10)
+    humidity_label.config(text=f"Humidity:  {humidity_update} %")
     humidity_label.grid(row=5, column=0, sticky="WE", padx=20, pady=10)
-    precipitation_label.config(text=f"Precipitation: {precipitation_update} %")
+    precipitation_label.config(text=f"Precipitation:  {precipitation_update} %")
     precipitation_label.grid(row=6, column=0, sticky="WE", padx=20, pady=10)
 
 
