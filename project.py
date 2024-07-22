@@ -90,12 +90,9 @@ def validation() -> dict | str:
     user_input = user_loc_input.get()
     if user_input:
         try:
-            latitude, longitude = (
-                get_coordinates(user_input)["latitude"],
-                get_coordinates(user_input)["longitude"],
-            )
+            get_coord = get_coordinates(user_input)
+            latitude, longitude = get_coord["latitude"], get_coord["longitude"]
             details = temperature_api(latitude, longitude)
-            # For the moment the results will be shown in the Terminal
             return {
                 "temperature": details["temperature"],
                 "humidity": details["humidity"],
