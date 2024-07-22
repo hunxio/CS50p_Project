@@ -69,15 +69,15 @@ def app_gui(window):
 
     # Initial Labels for Temperature, Humidity, Precipitation and Error
     temperature_label = tk.Label(
-        window, text="", font=(font, 17), bg=background_color, fg=font_color
+        window, text="", font=(font, 14), bg=background_color, fg=font_color
     )
 
     humidity_label = tk.Label(
-        window, text="", font=(font, 17), bg=background_color, fg=font_color
+        window, text="", font=(font, 14), bg=background_color, fg=font_color
     )
 
     precipitation_label = tk.Label(
-        window, text="", font=(font, 17), bg=background_color, fg=font_color
+        window, text="", font=(font, 14), bg=background_color, fg=font_color
     )
 
     error_label = tk.Label(
