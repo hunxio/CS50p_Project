@@ -53,7 +53,7 @@ def app_gui(window):
     logo_app.image = logo_app
     logo_app_label = tk.Label(window, image=logo_app)
     logo_app_label.config(bg=background_color)
-    logo_app_label.grid(row=0, column=0, padx=20)
+    logo_app_label.grid(row=0, column=0, sticky="N")
 
     # Input Field
     user_loc_input = tk.Entry(window)
@@ -92,7 +92,7 @@ def validation() -> dict | str:
         except AttributeError:
             return "The desired location was not found"
     else:
-        return "Blank input, please search for a location"
+        return "Please insert a location"
 
 
 def temperature_api(user_latitude: float, user_longitude: float) -> dict:
@@ -127,7 +127,7 @@ def temperature_api(user_latitude: float, user_longitude: float) -> dict:
 
 def window_update(temperature_update: int, humidity_update: float, precipitation_update: float) -> None:
     temperature_label.config(text=f"Temperature: {temperature_update} °C")
-    temperature_label.grid(row=4, column=0, sticky="WE", padx=20, pady=10)
+    temperature_label.grid(row=4, column=0, sticky="WE", padx=40, pady=10)
     humidity_label.config(text=f"Humidity: {humidity_update} %")
     humidity_label.grid(row=5, column=0, sticky="WE", padx=20, pady=10)
     precipitation_label.config(text=f"Precipitation: {precipitation_update} %")
