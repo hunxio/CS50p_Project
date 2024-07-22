@@ -2,8 +2,10 @@
 from tkinter import *
 import tkinter as tk
 from PIL import ImageTk, Image
+
 # Integrations for API  #
-from utils import get_time, get_coordinates
+from utils import get_coordinates
+
 # API #
 import openmeteo_requests
 import requests
@@ -13,22 +15,30 @@ from retry_requests import retry
 
 
 def main():
-    app_gui()
+    window = tk.Tk()
+    app_gui(window)
+    window.mainloop()
 
 
-def app_gui():
+#   ROW >    COLUMN v
+def app_gui(window):
+
+    global user_loc_input, temperature_label, humidity_label, precipitation_label, error_label
+
+    # Window size can not be resized
+    window.resizable(width=False, height=False)
+
     # Font
     font = "Montserrat"
+
     # Colors
     background_color = "#426b9e"
     font_color = "#ffffff"
     details_color = "#7aa4c3"
 
-    global user_loc_input
     # Window initialization
-    window = tk.Tk()
     window.configure(bg=background_color)
-    window.geometry("350x350")
+    window.geometry("415x415")
     window.title("CS50P Hunxio's Project")
     window.grid_columnconfigure(0, weight=1)
 
@@ -36,7 +46,7 @@ def app_gui():
     icon = PhotoImage(file="logo.png")
     window.iconphoto(False, icon)
 
-    # Text
+    # Text Text
     location_text = tk.Label(window, text="CS50P Weather Project", font=(font, 17))
     location_text.config(bg=background_color, fg=font_color)
     location_text.grid(row=1, column=0, sticky="WE", padx=20, pady=10)
@@ -46,36 +56,55 @@ def app_gui():
     logo_app.image = logo_app
     logo_app_label = tk.Label(window, image=logo_app)
     logo_app_label.config(bg=background_color)
-    logo_app_label.grid(row=0, column=0, padx=20)
+    logo_app_label.grid(row=0, column=0, sticky="N")
 
     # Input Field
     user_loc_input = tk.Entry(window)
     user_loc_input.grid(row=2, column=0, sticky="WE", padx=10)
 
     # Button Search
-    confirm_button = tk.Button(text="Find the temperature", command=input_validation)
+    confirm_button = tk.Button(text="Find the temperature", command=update_weather)
     confirm_button.config(bg=details_color, fg=font_color, font=(font, 13))
     confirm_button.grid(row=3, column=0, sticky="N", pady=10)
 
-    window.mainloop()
+    # Initial Labels for Temperature, Humidity, Precipitation and Error
+    temperature_label = tk.Label(
+        window, text="", font=(font, 17), bg=background_color, fg=font_color
+    )
 
-def input_validation() -> str:
+    humidity_label = tk.Label(
+        window, text="", font=(font, 17), bg=background_color, fg=font_color
+    )
+
+    precipitation_label = tk.Label(
+        window, text="", font=(font, 17), bg=background_color, fg=font_color
+    )
+
+    error_label = tk.Label(
+        window, text="", font=(font, 17), bg=background_color, fg="#ff4c4c"
+    )
+
+
+# Validation returns values or an error message in case of invalid inputs
+def validation() -> dict | str:
     user_input = user_loc_input.get()
     if user_input:
         try:
-            latitude, longitude, time = (
+            latitude, longitude = (
                 get_coordinates(user_input)["latitude"],
                 get_coordinates(user_input)["longitude"],
-                get_time(),
             )
             details = temperature_api(latitude, longitude)
             # For the moment the results will be shown in the Terminal
-            print(f"Temperature: {details["temperature"]}°C\nHumidity: {details["humidity"]}%\nPrecipitation: {details["precipitation"]}%")
+            return {
+                "temperature": details["temperature"],
+                "humidity": details["humidity"],
+                "precipitation": details["precipitation"],
+            }
         except AttributeError:
-            print("Invalid input")
-
+            return "The desired location was not found"
     else:
-        print("The search bar is empty, please enter your search")
+        return "Please insert a location"
 
 
 def temperature_api(user_latitude: float, user_longitude: float) -> dict:
@@ -106,6 +135,35 @@ def temperature_api(user_latitude: float, user_longitude: float) -> dict:
         "humidity": float("%.1f" % current_relative_humidity_2m),
         "precipitation": int(current_precipitation),
     }
+
+
+def window_update(
+    temperature_update: int, humidity_update: float, precipitation_update: float
+) -> None:
+    temperature_label.config(text=f"Temperature:  {temperature_update} °C")
+    temperature_label.grid(row=4, column=0, sticky="WE", padx=20, pady=10)
+    humidity_label.config(text=f"Humidity:  {humidity_update} %")
+    humidity_label.grid(row=5, column=0, sticky="WE", padx=20, pady=10)
+    precipitation_label.config(text=f"Precipitation:  {precipitation_update} %")
+    precipitation_label.grid(row=6, column=0, sticky="WE", padx=20, pady=10)
+
+
+# Function to update weather information
+def update_weather() -> None:
+    result = validation()
+    if isinstance(result, dict):
+        error_label.grid_forget()
+        temperature = result["temperature"]
+        humidity = result["humidity"]
+        precipitation = result["precipitation"]
+        window_update(temperature, humidity, precipitation)
+    else:
+        # If the result is a string, it means an error occurred, show the message
+        temperature_label.grid_forget()
+        humidity_label.grid_forget()
+        precipitation_label.grid_forget()
+        error_label.config(text=f"{result}")
+        error_label.grid(row=7, column=0, sticky="WE", padx=20, pady=10)
 
 
 if __name__ == "__main__":
