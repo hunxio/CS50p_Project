@@ -1,12 +1,4 @@
-from datetime import datetime
 from geopy.geocoders import Nominatim
-
-# Get time from user's location, it does not show the location time
-# It won't be used for the API, only "decoration"
-def get_time() -> str:
-    c = datetime.now()
-    current_time = c.strftime("%H:%M")
-    return current_time
 
 
 # Retrieves the user's current latitude and longitude
