@@ -13,6 +13,7 @@ import requests_cache
 import pandas as pd
 from retry_requests import retry
 
+BACKGROUND_COLOR = "#426b9e"
 
 def main():
     window = tk.Tk()
@@ -23,7 +24,7 @@ def main():
 #   ROW >    COLUMN v
 def app_gui(window):
 
-    global user_loc_input, temperature_label, humidity_label, precipitation_label, error_label
+    global user_loc_input, temperature_label, humidity_label, precipitation_label, error_label, logo_app_label
 
     # Window size can not be resized
     window.resizable(width=False, height=False)
@@ -32,12 +33,11 @@ def app_gui(window):
     font = "Montserrat"
 
     # Colors
-    background_color = "#426b9e"
     font_color = "#ffffff"
     details_color = "#7aa4c3"
 
     # Window initialization
-    window.configure(bg=background_color)
+    window.configure(bg=BACKGROUND_COLOR)
     window.geometry("415x415")
     window.title("CS50P Hunxio's Project")
     window.grid_columnconfigure(0, weight=1)
@@ -48,14 +48,14 @@ def app_gui(window):
 
     # Text Text
     location_text = tk.Label(window, text="CS50P Weather Project", font=(font, 17))
-    location_text.config(bg=background_color, fg=font_color)
+    location_text.config(bg=BACKGROUND_COLOR, fg=font_color)
     location_text.grid(row=1, column=0, sticky="WE", padx=20, pady=10)
 
     # Logo App
     logo_app = PhotoImage(file="logo.png")
     logo_app.image = logo_app
-    logo_app_label = tk.Label(window, image=logo_app)
-    logo_app_label.config(bg=background_color)
+    logo_app_label = tk.Label(image=logo_app)
+    logo_app_label.config(bg=BACKGROUND_COLOR)
     logo_app_label.grid(row=0, column=0, sticky="N")
 
     # Input Field
@@ -69,19 +69,19 @@ def app_gui(window):
 
     # Initial Labels for Temperature, Humidity, Precipitation and Error
     temperature_label = tk.Label(
-        window, text="", font=(font, 14), bg=background_color, fg=font_color
+        window, text="", font=(font, 14), bg=BACKGROUND_COLOR, fg=font_color
     )
 
     humidity_label = tk.Label(
-        window, text="", font=(font, 14), bg=background_color, fg=font_color
+        window, text="", font=(font, 14), bg=BACKGROUND_COLOR, fg=font_color
     )
 
     precipitation_label = tk.Label(
-        window, text="", font=(font, 14), bg=background_color, fg=font_color
+        window, text="", font=(font, 14), bg=BACKGROUND_COLOR, fg=font_color
     )
 
     error_label = tk.Label(
-        window, text="", font=(font, 17), bg=background_color, fg="#ff4c4c"
+        window, text="", font=(font, 15), bg=BACKGROUND_COLOR, fg="#ff4c4c"
     )
 
 
@@ -139,7 +139,14 @@ def temperature_api(user_latitude: float, user_longitude: float) -> dict:
 
 def window_update(
     temperature_update: int, humidity_update: float, precipitation_update: float
-) -> None:
+) -> None:   
+    # The logo image gets created once again to avoid it to disappear once the values are retrieved from the query
+    logo_app = PhotoImage(file="logo.png")
+    logo_app.image = logo_app
+    logo_app_label = tk.Label(image=logo_app)
+    logo_app_label.config(bg=BACKGROUND_COLOR)
+    logo_app_label.grid(row=0, column=0, sticky="N")
+
     temperature_label.config(text=f"Temperature:  {temperature_update} °C")
     temperature_label.grid(row=4, column=0, sticky="WE", padx=20, pady=10)
     humidity_label.config(text=f"Humidity:  {humidity_update} %")
