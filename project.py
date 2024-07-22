@@ -65,13 +65,22 @@ def app_gui(window):
     confirm_button.grid(row=3, column=0, sticky="N", pady=10)
 
     # Initial Labels for Temperature, Humidity, Precipitation and Error
-    temperature_label = tk.Label(window, text="", font=(font, 17), bg=background_color, fg=font_color)
+    temperature_label = tk.Label(
+        window, text="", font=(font, 17), bg=background_color, fg=font_color
+    )
 
-    humidity_label = tk.Label(window, text="", font=(font, 17), bg=background_color, fg=font_color)
+    humidity_label = tk.Label(
+        window, text="", font=(font, 17), bg=background_color, fg=font_color
+    )
 
-    precipitation_label = tk.Label(window, text="", font=(font, 17), bg=background_color, fg=font_color)
+    precipitation_label = tk.Label(
+        window, text="", font=(font, 17), bg=background_color, fg=font_color
+    )
 
-    error_label = tk.Label(window, text="", font=(font, 17), bg=background_color, fg="#ff4c4c")
+    error_label = tk.Label(
+        window, text="", font=(font, 17), bg=background_color, fg="#ff4c4c"
+    )
+
 
 # Validation returns values or an error message in case of invalid inputs
 def validation() -> dict | str:
@@ -125,7 +134,9 @@ def temperature_api(user_latitude: float, user_longitude: float) -> dict:
     }
 
 
-def window_update(temperature_update: int, humidity_update: float, precipitation_update: float) -> None:
+def window_update(
+    temperature_update: int, humidity_update: float, precipitation_update: float
+) -> None:
     temperature_label.config(text=f"Temperature: {temperature_update} °C")
     temperature_label.grid(row=4, column=0, sticky="WE", padx=40, pady=10)
     humidity_label.config(text=f"Humidity: {humidity_update} %")
