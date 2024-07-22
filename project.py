@@ -17,6 +17,9 @@ def main():
 
 
 def app_gui():
+
+    global user_loc_input
+
     # Font
     font = "Montserrat"
     # Colors
@@ -24,7 +27,6 @@ def app_gui():
     font_color = "#ffffff"
     details_color = "#7aa4c3"
 
-    global user_loc_input
     # Window initialization
     window = tk.Tk()
     window.configure(bg=background_color)
