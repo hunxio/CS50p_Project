@@ -8,7 +8,6 @@ def test_NYCoordinates():
 def test_LondonCoordinates():
     assert get_coordinates("London") == {"latitude": 51.5074456, "longitude": -0.1277653}
 
-def test_BlankInput():
+def test_RomeCoordinates():
     assert get_coordinates("Rome") == {"latitude": 41.8933203, "longitude": 12.4829321}
 
-    
