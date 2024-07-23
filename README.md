@@ -1,9 +1,16 @@
 
-# CS50P WEATHER PROJECT
-#### Video Demo:  <URL HERE>
-#### Introduction:
+<div align="center"> <h1>CS50P WEATHER PROJECT</h1> </div>
+
+<div align="center">
+	<img src="logo.png">
+</div>
+
+<div align="center"><h3>Video Demo:</h3></div>  
+<div align="center"><p>TBD</p></div>  
+
+### Introduction:
 Hello everyone, my name is Hunxio, and here you will find a brief explanation about my Final Project for CS50P ! This Final Project is made using Python and various tools we have learnt and used through the course, like libraries, APIs and many more. The code has comments and type hints to give a better reading and understing of the functions and what they do. I have tried to make a GUI to make this program easier to try out and/or test for everyone, a separate version of this program executable can be accessible to everyone requesting me here on my [GitHub](https://github.com/hunxio/CS50p_Project).
-#### Description:
+### Description:
 
 You will find in the root folder 5 files, here is what they do:
 - **.gitignore** : it does not upload on GitHub when you commit some changes to your code, the files specified in file. Sensible or private date should always be saved somewhere else and not shown in public accessible files;
@@ -33,11 +40,11 @@ As good practice explained during the CS50P course, we find
 
 This will prevent the program to run the main function unless we call the main function to be executed.
 
-#### Resources:
+### Resources:
 
 [Open-Meteo](open-meteo.com) - for providing a free non-commercial use API
 
-#### Contacts:
+### Contacts:
 [Hunxio's GitHub](https://github.com/hunxio)
 
   
