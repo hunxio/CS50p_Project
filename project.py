@@ -3,17 +3,17 @@ from tkinter import *
 import tkinter as tk
 from PIL import ImageTk, Image
 
-# Integrations for API  #
-from utils import get_coordinates
-
 # API #
 import openmeteo_requests
 import requests
 import requests_cache
 import pandas as pd
 from retry_requests import retry
+from geopy.geocoders import Nominatim
+
 
 BACKGROUND_COLOR = "#426b9e"
+
 
 def main():
     window = tk.Tk()
@@ -132,6 +132,19 @@ def temperature_api(user_latitude: float, user_longitude: float) -> dict:
         "humidity": float("%.1f" % current_relative_humidity_2m),
         "precipitation": int(current_precipitation),
     }
+
+
+# Retrieves the user's current latitude and longitude
+def get_coordinates(city: str) -> dict:
+    geolocator = Nominatim(user_agent="CS50PWeather")
+    getLoc = geolocator.geocode(city)
+
+    print (getLoc.latitude)
+    print(getLoc.longitude)
+    return {
+        "latitude": getLoc.latitude, 
+        "longitude": getLoc.longitude
+        }
 
 
 def window_update(
