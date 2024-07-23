@@ -139,17 +139,12 @@ def get_coordinates(city: str) -> dict:
     geolocator = Nominatim(user_agent="CS50PWeather")
     getLoc = geolocator.geocode(city)
 
-    print (getLoc.latitude)
-    print(getLoc.longitude)
-    return {
-        "latitude": getLoc.latitude, 
-        "longitude": getLoc.longitude
-        }
+    return {"latitude": getLoc.latitude, "longitude": getLoc.longitude}
 
 
 def window_update(
     temperature_update: int, humidity_update: float, precipitation_update: float
-) -> None:   
+) -> None:
     # The logo image gets created once again to avoid it to disappear once the values are retrieved from the query
     logo_app = PhotoImage(file="logo.png")
     logo_app.image = logo_app
